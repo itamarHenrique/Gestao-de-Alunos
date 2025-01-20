@@ -37,6 +37,23 @@ class CursoService
         ]);
     }
 
+    public function updateCurso($data, $id)
+    {
+        $curso = Curso::find($id);
+
+        if(!$curso){
+            throw new \Exception('Curso não encontrado');
+        }
+
+        if(isset($data['curso'])){
+            $data = $data['curso'];
+        }
+
+        $curso->update($data);
+
+        return $curso;
+    }
+
     public function deleteById($id)
     {
         return Curso::where('id', $id)->delete();

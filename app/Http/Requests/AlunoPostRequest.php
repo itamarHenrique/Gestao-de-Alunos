@@ -33,7 +33,7 @@ class AlunoPostRequest extends FormRequest
             'enderecos.numero_da_casa' => ['nullable', 'string', 'max:20'],
             'enderecos.bairro' => ['nullable', 'string', 'max:244'],
             'curso' => ['required', 'array'],
-            'curso.nome' => ['string', 'required']
+            'curso.nome' => ['string', 'required', 'min:3']
 
         ];
     }
