@@ -27,6 +27,8 @@ class AlunoUpdateRequest extends FormRequest
         'RA' => ['sometimes', 'string', 'max:255', 'min:7'],
         'email' => ['sometimes', 'email', 'max:255', 'min:8'],
         'unidade_de_ensino' => ['sometimes', 'string', 'min:4'],
+        'enderecos' => ['sometimes', 'array'],
+        'curso' => ['sometimes', 'array'],
     ];
 }
 

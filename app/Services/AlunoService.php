@@ -48,9 +48,13 @@ class AlunoService
 
     public function updateAluno($data, $id)
 {
-    $aluno = $this->getById($id);
+    $aluno = Aluno::find($id);
 
-    $aluno->update($data);
+    if($aluno){
+        unset($data['enderecos']);
+        unset($data['curso']);
+        $aluno->update($data);
+    }
 
     return $aluno;
 }

@@ -87,6 +87,8 @@ class AlunosController extends Controller
     public function updateAluno(AlunoUpdateRequest $request, $id)
 {
     $data = $request->validated();
+    $dataEndereco = $data['enderecos'];
+    $dataCurso = $data['curso'];
 
     try{
         $aluno = $this->alunoService->updateAluno($data, $id);
@@ -94,6 +96,20 @@ class AlunosController extends Controller
         if (!$aluno) {
             return response()->json(['message' => 'Erro ao atualizar os dados do aluno!'], 400);
         }
+
+        if($dataEndereco){
+            $endereco = $this->enderecoService->updateEndereco($dataEndereco, $aluno->enderecos->first()->id);
+        }
+
+        if($dataCurso){
+            $curso = $this->cursoService->updateCurso($dataCurso, $aluno->cursos->first()->id);
+        }
+
+
+
+
+
+        $aluno->load('enderecos', 'cursos');
 
         return response()->json(new AlunoResource($aluno), 200);
 
