@@ -87,10 +87,14 @@ class AlunosController extends Controller
     public function updateAluno(AlunoUpdateRequest $request, $id)
 {
     $data = $request->validated();
-    $dataEndereco = $data['enderecos'];
-    $dataCurso = $data['curso'];
+    $dataEndereco = $data['enderecos'] ?? null;
+    $dataCurso = $data['curso'] ?? null;
 
     try{
+
+        unset($data['enderecos']);
+        unset($data['curso']);
+
         $aluno = $this->alunoService->updateAluno($data, $id);
 
         if (!$aluno) {
