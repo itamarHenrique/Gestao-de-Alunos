@@ -24,7 +24,7 @@ class AlunoPostRequest extends FormRequest
         return [
             'primeiro_nome' => ['required', 'string', 'max:100', 'min:3'],
             'sobrenome' => ['required', 'string', 'max:100', 'min:3'],
-            'RA' => ['required', 'string', 'max:40', 'min:7', 'unique:alunos,RA'],
+            'RA' => ['required', 'string', 'max:10', 'min:7', 'unique:alunos,RA'],
             'email' => ['required', 'email', 'max:244', 'min:8', 'unique:alunos,email'],
             'unidade_de_ensino' => ['required', 'string', 'min:4'],
             'enderecos' => ['required', 'array'],

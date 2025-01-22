@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('alunos', function (Blueprint $table) {
+            $userStatus = collect(config('constants.status'))->pluck('value')->all();
             $table->id();
+            $table->enum('user_status', $userStatus)->default('ativo');
             $table->string('primeiro_nome', 255);
             $table->string('sobrenome', 255);
             $table->string('RA', 255)->unique;

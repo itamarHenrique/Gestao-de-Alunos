@@ -11,7 +11,7 @@ class Aluno extends Model
     use HasFactory;
 
 
-    protected $fillable = ['primeiro_nome', 'sobrenome','enderecos' , 'RA','email','unidade_de_ensino'];
+    protected $fillable = ['primeiro_nome', 'sobrenome','enderecos' , 'RA','email','unidade_de_ensino', 'user_status'];
 
     protected $aluno = 'alunos';
 

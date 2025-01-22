@@ -106,9 +106,6 @@ class AlunosController extends Controller
         }
 
 
-
-
-
         $aluno->load('enderecos', 'cursos');
 
         return response()->json(new AlunoResource($aluno), 200);

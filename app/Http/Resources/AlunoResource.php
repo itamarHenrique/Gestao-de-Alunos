@@ -16,6 +16,7 @@ class AlunoResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'user_status' => $this->user_status,
             'primeiro_nome' => $this->primeiro_nome,
             'sobrenome' => $this->sobrenome,
             'nome_completo' => "{$this->primeiro_nome} {$this->sobrenome}",
