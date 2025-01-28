@@ -51,8 +51,7 @@ class AlunosController extends Controller
 
     public function deleteAluno($id)
     {
-        $alunoDeletado = $this->getById($id);
-        return $this->alunoService->deleteAluno($alunoDeletado);
+        return $this->alunoService->deleteAluno($id);
     }
 
     public function createAluno(AlunoPostRequest $request)
