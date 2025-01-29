@@ -36,6 +36,7 @@ class AlunoService
             'endereco' => $endereco,
             'RA' => $data['RA'],
             'email' => $data['email'],
+            'celular' => $data['celular'],
             'curso' => $data['curso'],
             'unidade_de_ensino' => $data['unidade_de_ensino']
         ]);

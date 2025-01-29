@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('sobrenome', 255);
             $table->string('RA', 255)->unique;
             $table->string('email', 100)->unique();
-            $table->char('celular', 20)->unique();
+            $table->string('celular', 20)->unique();
             $table->string('unidade_de_ensino', 255);
             $table->timestamps();
         });
