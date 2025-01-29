@@ -1,9 +1,6 @@
 <?php
 
-
 return [
-    'status' => [
-        ['label' => 'Apto', 'value' => 'ativo'],
-        ['label' => 'Inapto', 'value' => 'inativo']
-    ]
+    'user_status' => ['ativo', 'inativo'],
+    'user_formacao' => ['Licenciatura', 'Graduação', 'Tecnologo'],
 ];

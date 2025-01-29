@@ -11,14 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('alunos', function (Blueprint $table) {
-            $userStatus = collect(config('constants.status'))->pluck('value')->all();
+        $userStatus = config('constants.user_status');
+        $userFormacao = config('constants.user_formacao');
+
+        // dd($userStatus, $userFormacao);
+
+        Schema::create('alunos', function (Blueprint $table) use ($userStatus, $userFormacao) {
             $table->id();
             $table->enum('user_status', $userStatus)->default('ativo');
+            $table->enum('user_formacao', $userFormacao);
             $table->string('primeiro_nome', 255);
             $table->string('sobrenome', 255);
             $table->string('RA', 255)->unique;
-            $table->string('email', 100)->unique;
+            $table->string('email', 100)->unique();
+            $table->char('celular', 20)->unique();
             $table->string('unidade_de_ensino', 255);
             $table->timestamps();
         });
