@@ -22,7 +22,18 @@ class CursoPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nome' => ['string', 'max:100', 'min:3']
+            'nome' => ['required', 'string', 'max:100', 'min:3'],
+            'user_formacao' => ['required', 'string', 'in:' . implode(',', config('constants.user_formacao'))],
         ];
+    }
+
+    public function messages()
+    {
+        return [
+            'nome.required' => 'O nome do curso é obrigatorio',
+            'user_formacao.required' => 'O campo formação do usuario é obrigatorio',
+        ];
+
+
     }
 }
