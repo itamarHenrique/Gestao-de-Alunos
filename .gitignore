@@ -20,3 +20,4 @@ yarn-error.log
 /.vscode
 /.zed
 .vercel
+.README.md

@@ -37,6 +37,7 @@ class AlunoResource extends JsonResource
                 ];
             }),
             'email' => $this->email,
+            'celular' => $this->celular,
             'RA' => $this->RA,
             'unidade_de_ensino' => $this->unidade_de_ensino
         ];
