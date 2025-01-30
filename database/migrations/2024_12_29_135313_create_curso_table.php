@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cursos', function (Blueprint $table) {
+        $userFormacao = config('constants.user_formacao');
+
+        Schema::create('cursos', function (Blueprint $table) use ($userFormacao) {
             $table->id();
-            $table->string('nome', 255);
+            $table->string('nome', 255)->unique();
+            $table->enum('tipo_formacao', $userFormacao);
             $table->timestamps();
         });
     }
