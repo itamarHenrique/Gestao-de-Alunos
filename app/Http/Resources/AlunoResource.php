@@ -17,7 +17,6 @@ class AlunoResource extends JsonResource
         return [
             'id' => $this->id,
             'user_status' => $this->user_status,
-            'user_formacao' => $this->user_formacao,
             'primeiro_nome' => $this->primeiro_nome,
             'sobrenome' => $this->sobrenome,
             'nome_completo' => "{$this->primeiro_nome} {$this->sobrenome}",
@@ -34,6 +33,7 @@ class AlunoResource extends JsonResource
                 return [
                 'id' => $curso->id,
                 'nome do curso' => $curso->nome,
+                'tipo do curso' => $curso->formacao
                 ];
             }),
             'email' => $this->email,

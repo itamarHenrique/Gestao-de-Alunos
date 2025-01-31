@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cursos', function (Blueprint $table) {
+        $userFormacao = config('constants.formacao');
+
+        Schema::create('cursos', function (Blueprint $table) use ($userFormacao) {
             $table->id();
-            $table->string('nome', 255);
+            $table->string('nome', 255)->unique();
+            $table->enum('formacao', $userFormacao);
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('curso');
+        Schema::dropIfExists('cursos');
     }
 };

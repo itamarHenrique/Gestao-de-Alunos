@@ -31,28 +31,27 @@ class CursoService
     }
 
     public function createCurso($data)
-    {
-        return Curso::create([
-            'nome' => $data['nome']
-        ]);
+{
+    return Curso::create($data);
+}
+
+public function updateCurso($data, $id)
+{
+    $curso = Curso::find($id);
+
+    if(!$curso){
+        throw new \Exception('Curso não encontrado');
     }
 
-    public function updateCurso($data, $id)
-    {
-        $curso = Curso::find($id);
-
-        if(!$curso){
-            throw new \Exception('Curso não encontrado');
-        }
-
-        if(isset($data['curso'])){
-            $data = $data['curso'];
-        }
-
-        $curso->update($data);
-
-        return $curso;
+    if(isset($data['curso'])){
+        $data = $data['curso'];
     }
+
+    $curso->update($data);
+
+    return $curso;
+}
+
 
     public function deleteById($id)
     {
