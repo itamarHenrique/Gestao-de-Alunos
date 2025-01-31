@@ -35,6 +35,7 @@ class AlunoService
             'sobrenome' => $data['sobrenome'],
             'endereco' => $endereco,
             'RA' => $data['RA'],
+            'user_status' => $data['user_status'],
             'email' => $data['email'],
             'celular' => $data['celular'],
             'curso' => $data['curso'],

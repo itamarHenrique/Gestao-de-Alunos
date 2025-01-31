@@ -33,7 +33,7 @@ class AlunoResource extends JsonResource
                 return [
                 'id' => $curso->id,
                 'nome do curso' => $curso->nome,
-                'tipo do curso' => $this->user_formacao
+                'tipo do curso' => $curso->formacao
                 ];
             }),
             'email' => $this->email,

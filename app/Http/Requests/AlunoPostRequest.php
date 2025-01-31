@@ -27,7 +27,7 @@ class AlunoPostRequest extends FormRequest
             'RA' => ['required', 'string', 'max:10', 'min:7', 'unique:alunos,RA'],
             'email' => ['required', 'email', 'max:244', 'min:8', 'unique:alunos,email'],
             'user_status' => ['required', 'string', 'in:' . implode(',', config('constants.user_status'))],
-            'celular' => ['required', 'string', 'max:20', 'min:12'],
+            'celular' => ['required', 'string', 'max:20', 'min:12', 'unique:alunos,celular'],
             'unidade_de_ensino' => ['required', 'string', 'min:4'],
             'enderecos' => ['required', 'array'],
             'enderecos.rua' => ['nullable', 'string', 'max:244'],

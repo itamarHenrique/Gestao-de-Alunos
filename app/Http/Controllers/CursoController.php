@@ -48,7 +48,7 @@ class CursoController extends Controller
             $curso = $this->cursoService->updateCurso($id, $data);
 
             if(!$curso){
-                return response()->json(['message' => 'Erro ao atualziar o curso'], 400);
+                return response()->json(['message' => 'Erro ao atualizar o curso'], 400);
             }
 
             return response()->json($curso, 200);
