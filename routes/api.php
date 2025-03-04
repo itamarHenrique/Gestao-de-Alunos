@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlunosController;
+use App\Http\Controllers\CursoController;
 use App\Http\Controllers\EnderecoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -8,8 +9,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-
-
 
 
 Route::prefix('alunos')->group(function(){
@@ -25,3 +24,12 @@ Route::prefix('endereco')->group(function(){
     Route::get('/{id}', [EnderecoController::class, 'getById']);
     Route::put('/{id}', [EnderecoController::class, 'updateEndereco']);
 });
+
+
+Route::prefix('curso')->group(function(){
+    Route::get('/', [CursoController::class, 'getAll']);
+    Route::get('/{id}', [CursoController::class, 'getById']);
+    Route::post('/', [CursoController::class, 'createCurso']);
+    Route::put('/{id}', [CursoController::class, 'updateCurso']);
+});
+
