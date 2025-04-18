@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('aluno_endereco', function (Blueprint $table) {
             $table->primary(['aluno_id', 'endereco_id']);
-            $table->unsignedBigInteger('aluno_id')->nullable();
-            $table->unsignedBigInteger('endereco_id')->nullable();
+            $table->unsignedBigInteger('aluno_id');
+            $table->unsignedBigInteger('endereco_id');
             $table->timestamps();
 
 

@@ -28,6 +28,7 @@ class AlunoFactory extends Factory
             'email' => $this->faker->unique->safeEmail(),
             'RA' => $this->faker->unique()->randomNumber(8),
             'unidade_de_ensino' => 'Unime - FCT Lauro de Freitas',
+            'celular' => $this->faker->phoneNumber()
         ];
     }
 

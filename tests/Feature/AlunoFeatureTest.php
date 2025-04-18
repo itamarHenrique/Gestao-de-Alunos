@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class AlunoFeatureTest extends TestCase
 {
-    // use RefreshDatabase;
+    use RefreshDatabase;
 
     public function test_criar_aluno_com_endereco(): void
     {

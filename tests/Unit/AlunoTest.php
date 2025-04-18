@@ -2,8 +2,10 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Aluno;
+use Tests\TestCase; // <- Use a TestCase do Laravel
+
 
 class AlunoTest extends TestCase
 {
