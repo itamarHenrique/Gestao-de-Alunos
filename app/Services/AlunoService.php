@@ -17,7 +17,7 @@ class AlunoService
 
     public function getAll()
     {
-        return Aluno::with('enderecos')->get();
+        return Aluno::with(['enderecos', 'cursos'])->get();
     }
 
     public function getById($id)

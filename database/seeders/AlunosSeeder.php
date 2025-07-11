@@ -1,33 +1,30 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Seeders;
 
-use App\Models\Aluno;
-use App\Models\Endereco;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Aluno>
- */
-class AlunoFactory extends Factory
+class AlunosSeeder extends Seeder
 {
-
-    protected $model = Aluno::class;
-
     /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
+     * Run the database seeds.
      */
-    public function definition(): array
+    public function run(): void
     {
+        $faker = Faker::create();
 
-        return [
-            'primeiro_nome' => $this->faker->firstName(),
-            'sobrenome' => $this->faker->lastName(),
-            'email' => $this->faker->unique->safeEmail(),
-            'RA' => $this->faker->unique()->randomNumber(8),
-            'unidade_de_ensino' => $this->faker->randomElement([
+        $cursos = DB::table('cursos')->pluck('id')->toArray();
+        $enderecos = DB::table('enderecos')->pluck('id')->toArray();
+
+        for ($i = 0; $i < 10; $i++) {
+            DB::table('alunos')->insert([
+                'primeiro_nome' => $faker->name,
+                'sobrenome' => $faker->lastName(),
+                'email' => $faker->unique()->safeEmail,
+                'unidade_de_ensino' => $faker->randomElement([
                 'Universidade Nova Era',
                 'Faculdade Estrela do Saber',
                 'Centro Universitário Horizonte',
@@ -50,10 +47,11 @@ class AlunoFactory extends Factory
                 'Instituto Brasileiro de Ensino Superior (IBES)',
                 'Faculdade Integração Global',
             ]),
-            'celular' => $this->faker->phoneNumber()
-        ];
+                'celular' => $faker->phoneNumber,
+                'RA' => $faker->randomNumber(7),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
-
-
-
 }
