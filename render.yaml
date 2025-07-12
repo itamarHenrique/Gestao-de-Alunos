@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: laravel-api
+    env: php
+    plan: free
+    buildCommand: |
+      composer install
+      php artisan config:clear
+      php artisan key:generate
+      php artisan migrate --force
+    startCommand: php artisan serve --host=0.0.0.0 --port=10000
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        value: dpg-d1ost0ffte5s73bn0qgg-a
+      - key: DB_PORT
+        value: 5432
+      - key: DB_DATABASE
+        value: alunos_whn3
+      - key: DB_USERNAME
+        value: root
+      - key: DB_PASSWORD
+        value: 58GcZFU34iF5KUvNt1FpShpvV2Ro7kiW
