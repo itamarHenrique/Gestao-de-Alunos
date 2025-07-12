@@ -1,14 +1,9 @@
 services:
   - type: web
-    name: laravel-api
-    env: php
+    name: laravel-api-docker
+    env: docker
     plan: free
-    buildCommand: |
-      composer install
-      php artisan config:clear
-      php artisan key:generate
-      php artisan migrate --force
-    startCommand: php artisan serve --host=0.0.0.0 --port=10000
+    dockerfilePath: ./Dockerfile
     autoDeploy: true
     envVars:
       - key: APP_ENV

@@ -33,3 +33,7 @@ Route::prefix('curso')->group(function(){
     Route::put('/{id}', [CursoController::class, 'updateCurso']);
 });
 
+Route::get('/ping', function () {
+    return response()->json(['status' => 'online']);
+});
+
