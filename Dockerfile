@@ -1,43 +1,34 @@
-# Etapa 1: Composer - build das dependências
-FROM composer:2.6 as build
-
-WORKDIR /app
-
-# Copia apenas arquivos do Composer e instala dependências
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-interaction --prefer-dist
-
-# Copia todo o restante da aplicação Laravel
-COPY . .
-
-# Etapa 2: Ambiente final com PHP e Apache
+# Etapa 1: Imagem base com PHP e Apache
 FROM php:8.2-apache
 
-# Instala extensões necessárias (incluindo PostgreSQL)
+# Instala extensões do PHP necessárias para Laravel + PostgreSQL
 RUN apt-get update && apt-get install -y \
     libpq-dev zip unzip git curl \
     && docker-php-ext-install pdo pdo_pgsql
 
-# Ativa o mod_rewrite (essencial para Laravel)
+# Ativa mod_rewrite para o Laravel funcionar com URLs amigáveis
 RUN a2enmod rewrite
 
-# Define o diretório raiz para o Apache como /public
+# Define o diretório raiz do Apache como /var/www/html/public
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-
-# Aponta o Apache para a pasta public do Laravel
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 
-# Copia o app da etapa de build para o container final
-COPY --from=build /app /var/www/html
-
-# Ajusta permissões das pastas de cache e storage
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Define o diretório de trabalho
+# Define diretório de trabalho
 WORKDIR /var/www/html
 
-# Expõe a porta padrão
+# Copia todos os arquivos do projeto para o container
+COPY . .
+
+# Instala o Composer e as dependências da aplicação
+RUN curl -sS https://getcomposer.org/installer | php && \
+    mv composer.phar /usr/local/bin/composer && \
+    composer install --no-dev --no-interaction --prefer-dist
+
+# Corrige permissões das pastas de cache
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Expondo a porta padrão da aplicação
 EXPOSE 80
 
-# Comando para iniciar o Apache
+# Comando que inicia o servidor Apache
 CMD ["apache2-foreground"]
