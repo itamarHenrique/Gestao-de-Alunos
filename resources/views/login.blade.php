@@ -1,61 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-
-    {{-- Google Fonts: Manrope --}}
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700&display=swap" rel="stylesheet">
-
-    @vite('resources/css/app.css')
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        .font-manrope {
-            font-family: 'Manrope', sans-serif;
-        }
+      body {
+        font-family: 'Manrope', sans-serif;
+      }
     </style>
-</head>
-<body class="bg-[#0A1E3F] flex items-center justify-center min-h-screen px-4">
-
-    <div class="bg-[#3ED9D4] p-8 md:p-10 rounded-xl w-full max-w-sm shadow-xl text-center">
-        
-        {{-- Título LOGIN --}}
-        <h1 class="text-white text-4xl md:text-[64px] font-manrope font-bold leading-none mb-8">
-            LOGIN
-        </h1>
-
-        {{-- Formulário de Login --}}
-        <form action="{{ route('login') }}" method="POST" class="space-y-4 text-left">
-            @csrf
-
-            <div>
-                <input 
-                    type="email" 
-                    name="email" 
-                    placeholder="E-mail" 
-                    required
-                    class="w-full p-3 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-600"
-                >
-            </div>
-
-            <div>
-                <input 
-                    type="password" 
-                    name="password" 
-                    placeholder="Senha" 
-                    required
-                    class="w-full p-3 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-600"
-                >
-            </div>
-
-            <button 
-                type="submit" 
-                class="mt-4 w-full bg-[#0A1E3F] text-white py-3 rounded-lg hover:bg-[#092037] transition-colors font-semibold"
-            >
-                Entrar
-            </button>
-        </form>
+  </head>
+  <body class="flex items-center justify-center h-screen bg-blue-900">
+    <div class="bg-cyan-400 p-8 rounded-2xl w-80 shadow-md">
+      <h1 class="text-2xl font-bold text-center mb-6">LOGIN</h1>
+      <form>
+        <input
+          type="text"
+          placeholder="Usuário"
+          class="w-full mb-4 p-3 rounded-full bg-white placeholder:text-gray-500 focus:outline-none"
+        />
+        <input
+          type="password"
+          placeholder="Senha"
+          class="w-full mb-6 p-3 rounded-full bg-white placeholder:text-gray-500 focus:outline-none"
+        />
+        <button
+          type="submit"
+          class="w-full bg-white text-black font-semibold py-2 rounded-full hover:bg-gray-200 transition"
+        >
+          login
+        </button>
+      </form>
     </div>
-
-</body>
+  </body>
 </html>
