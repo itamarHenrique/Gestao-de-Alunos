@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlunosController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\EnderecoController;
 use Illuminate\Http\Request;
@@ -32,4 +33,5 @@ Route::prefix('curso')->group(function(){
     Route::post('/', [CursoController::class, 'createCurso']);
     Route::put('/{id}', [CursoController::class, 'updateCurso']);
 });
+
 
