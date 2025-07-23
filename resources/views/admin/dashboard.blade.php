@@ -82,7 +82,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-500">Total de Alunos</p>
-                            <h3 class="text-2xl font-bold">1,245</h3>
+                            <h3 class="text-2xl font-bold">{{ $totalAlunos }}</h3>
                         </div>
                         <span class="material-icons text-blue-500 text-3xl">school</span>
                     </div>
@@ -102,7 +102,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-500">Cursos Ativos</p>
-                            <h3 class="text-2xl font-bold">12</h3>
+                            <h3 class="text-2xl font-bold">{{ $totalCursos }}</h3>
                         </div>
                         <span class="material-icons text-purple-500 text-3xl">book</span>
                     </div>
@@ -123,25 +123,24 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">João Silva</td>
-                                <td class="px-6 py-4 whitespace-nowrap">2023001</td>
-                                <td class="px-6 py-4 whitespace-nowrap">Informática</td>
-                                <td class="px-6 py-4 whitespace-nowrap">10/05/2023</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">Maria Oliveira</td>
-                                <td class="px-6 py-4 whitespace-nowrap">2023002</td>
-                                <td class="px-6 py-4 whitespace-nowrap">Administração</td>
-                                <td class="px-6 py-4 whitespace-nowrap">09/05/2023</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">Carlos Souza</td>
-                                <td class="px-6 py-4 whitespace-nowrap">2023003</td>
-                                <td class="px-6 py-4 whitespace-nowrap">Enfermagem</td>
-                                <td class="px-6 py-4 whitespace-nowrap">08/05/2023</td>
-                            </tr>
+                            @forelse ($alunos as $aluno)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $aluno->primeiro_nome .  ' ' . $aluno->sobrenome }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $aluno->matricula }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ $aluno->cursos->pluck('nome')->first() ?? '---' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ $aluno->created_at->format('d/m/Y') }}
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-gray-500">Nenhum aluno encontrado.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
+
                     </table>
                 </div>
             </div>

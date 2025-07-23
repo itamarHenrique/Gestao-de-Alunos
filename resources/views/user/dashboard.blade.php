@@ -19,10 +19,16 @@
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <span class="material-icons">school</span>
-                <span class="font-semibold">Minha Instituição</span>
+                <span class="font-semibold">{{ $usuario->unidade_de_ensino }}</span>
             </div>
             <div class="flex items-center space-x-4">
                 <span class="text-sm">Olá, {{ $usuario->primeiro_nome }}</span>
+                <!-- Ícone de perfil -->
+                <a href="{{ route('perfil') }}" 
+                class="flex items-center space-x-1 hover:bg-green-600 px-3 py-1 rounded">
+                    <span class="material-icons text-sm">person</span>
+                    <span>Perfil</span>
+                </a>
                 <a href="{{ route('logout') }}" 
                    class="flex items-center space-x-1 hover:bg-green-600 px-3 py-1 rounded"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -57,15 +63,19 @@
             </div>
 
             <!-- Card Curso -->
-            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Meu Curso</h3>
-                        <p class="text-gray-600">Informática</p>
-                    </div>
-                    <span class="material-icons text-blue-500 text-3xl">book</span>
+        <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800">Meus Cursos</h3>
+                        <ul class="text-gray-600 text-sm space-y-1">
+                            @foreach($usuario->cursos as $curso)
+                                <li>{{ $curso->nome }}</li>
+                            @endforeach
+                        </ul>
                 </div>
+                <span class="material-icons text-blue-500 text-3xl">book</span>
             </div>
+        </div>
 
             <!-- Card Mensagens -->
             <div class="bg-white rounded-lg shadow-md p-6 card-hover">

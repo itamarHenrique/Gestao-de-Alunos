@@ -63,8 +63,19 @@ class LoginController extends Controller
             ? Auth::guard('aluno')->user()
             : Auth::user();
 
+        if($usuario instanceof \App\Models\Aluno){
+            $usuario->load('cursos', 'enderecos');
+        };
+
         return view('user.dashboard', compact('usuario'));
     }
+
+    public function perfil()
+    {
+        $usuario = Auth::guard('aluno')->user();
+        return view('user.perfil', compact('usuario'));
+    }
+
 
 
 }
