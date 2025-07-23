@@ -13,7 +13,7 @@ class Aluno extends Authenticatable
     use HasFactory, Notifiable;
 
 
-    protected $fillable = ['primeiro_nome', 'sobrenome','enderecos' , 'RA','email','unidade_de_ensino', 'celular', 'user_status', 'perfil', 'password', 'remember_token'];
+    protected $fillable = ['primeiro_nome', 'sobrenome','enderecos' , 'matricula','email','unidade_de_ensino', 'celular', 'user_status', 'perfil', 'password', 'remember_token'];
 
     protected $aluno = 'alunos';
 

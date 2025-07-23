@@ -1,31 +1,108 @@
 <?php
 
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Authentication Settings
+    |--------------------------------------------------------------------------
+    |
+    | You may change these default settings as needed. The default guard
+    | is typically "web", and the default password broker is usually "users".
+    |
+    */
+
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'guard' => 'web',
+        'passwords' => 'users',
     ],
 
-'guards' => [
-    'web' => [
-        'driver' => 'session',
-        'provider' => 'users',
-    ],
-    'aluno' => [
-        'driver' => 'session',
-        'provider' => 'alunos',
-    ],
-],
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Guards
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define every authentication guard for your application.
+    | Laravel uses "session" driver for web, but you can add others like "token".
+    |
+    */
 
-'providers' => [
-    'users' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\User::class,
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'aluno' => [
+            'driver' => 'session',
+            'provider' => 'alunos',
+        ],
+
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
-    'alunos' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\Aluno::class,
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Providers
+    |--------------------------------------------------------------------------
+    |
+    | This defines how users are retrieved from your storage. You may use
+    | Eloquent or database query builder. You can create multiple providers.
+    |
+    */
+
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+        'alunos' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Aluno::class,
+        ],
     ],
-],
-    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Password Reset Settings
+    |--------------------------------------------------------------------------
+    |
+    | You can specify multiple password brokers if you have more than one
+    | user table or model. The default expiration is 60 minutes.
+    |
+    */
+
+    'passwords' => [
+        'users' => [
+            'provider' => 'users',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'alunos' => [
+            'provider' => 'alunos',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Password Confirmation Timeout
+    |--------------------------------------------------------------------------
+    |
+    | This defines how many seconds before a password confirmation times out
+    | and the user is asked to re-enter their password. Default is 3 hours.
+    |
+    */
+
+    'password_timeout' => 10800,
+
 ];

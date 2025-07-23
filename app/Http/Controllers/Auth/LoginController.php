@@ -35,9 +35,9 @@ class LoginController extends Controller
         $aluno = Aluno::where('email', $credentials['email'])->first();
 
         if ($aluno && Hash::check($credentials['password'], $aluno->password)) {
-            Auth::login($aluno); // login manual
+            Auth::guard('aluno')->login($aluno);
             $request->session()->regenerate();
-            return redirect()->route('user.dashboard');
+            return redirect()->route('aluno.dashboard');
         }
 
         return back()->withErrors([
@@ -48,17 +48,23 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
+        Auth::guard('aluno')->logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect('/login');
     }
 
     public function dashboard()
     {
-        $aluno = Auth::user();
+        $usuario = Auth::guard('aluno')->check()
+            ? Auth::guard('aluno')->user()
+            : Auth::user();
 
-        return view('user.dashboard', compact('aluno'));
+        return view('user.dashboard', compact('usuario'));
     }
+
 
 }
