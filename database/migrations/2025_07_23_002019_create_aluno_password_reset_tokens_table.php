@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $perfil = config('constants.perfil');
-
-        Schema::table('users', function (Blueprint $table) use ($perfil) {
-            $table->enum('perfil', $perfil)->default('usuario');
+        Schema::create('aluno_password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamps();
         });
     }
 
@@ -23,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('aluno_password_reset_tokens');
     }
 };

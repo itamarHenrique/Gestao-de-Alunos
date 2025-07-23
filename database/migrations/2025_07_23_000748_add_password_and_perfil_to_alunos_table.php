@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $perfil = config('constants.perfil');
+        $perfil = config('constants.perfil_aluno');
 
-        Schema::table('users', function (Blueprint $table) use ($perfil) {
-            $table->enum('perfil', $perfil)->default('usuario');
+        Schema::table('alunos', function (Blueprint $table) use ($perfil) {
+
+        $table->enum('perfil', $perfil)->default('usuario');
+        $table->string('password');
         });
     }
 
@@ -23,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('alunos', function (Blueprint $table) {
             //
         });
     }

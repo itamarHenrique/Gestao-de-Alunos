@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
+use Nette\Utils\Random;
 
 class AlunosSeeder extends Seeder
 {
@@ -48,7 +49,9 @@ class AlunosSeeder extends Seeder
                 'Faculdade Integração Global',
             ]),
                 'celular' => $faker->phoneNumber,
-                'RA' => $faker->randomNumber(7),
+                'matricula' => $faker->randomNumber(7),
+                'password' => bcrypt('12345678'),
+                'perfil'=> 'usuario',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

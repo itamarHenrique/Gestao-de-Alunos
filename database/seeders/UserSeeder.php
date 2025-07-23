@@ -17,21 +17,28 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('12345678'),
-            'perfil' => 'Admin'
+            'perfil' => 'admin'
         ]);
 
         User::create([
             'name' => 'usuario',
             'email' => 'user@gmail.com',
             'password' => bcrypt('12345678'),
-            'perfil' => 'Usuario'
+            'perfil' => 'usuario'
         ]);
 
         User::create([
             'name' => 'usuario1',
             'email' => 'usuario@gmail.com',
             'password' => bcrypt('12345678'),
-            'perfil' => 'Usuario'
+            'perfil' => 'usuario'
+        ]);
+
+        User::create([
+            'name' => 'teste',
+            'email' => 'teste@gmail.com',
+            'password' => bcrypt('teste'),
+            'perfil' => 'admin'
         ]);
     }
 }

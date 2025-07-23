@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('user_status', $userStatus)->default('ativo');
             $table->string('primeiro_nome', 255);
             $table->string('sobrenome', 255);
-            $table->string('RA', 255)->unique;
+            $table->string('matricula', 255)->unique;
             $table->string('email', 100)->unique();
             $table->string('celular', 20)->unique();
             $table->string('unidade_de_ensino', 255);
