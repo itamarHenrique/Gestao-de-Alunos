@@ -1,18 +1,19 @@
 services:
   - type: web
-    name: gestao-de-alunos
+    name: laravel-app
     env: php
     plan: free
-    region: sao_paulo
     buildCommand: |
       composer install --no-dev --optimize-autoloader
       php artisan config:cache
+      php artisan route:cache
       php artisan migrate --force
-      php artisan db:seed --force
-    startCommand: php artisan serve --host 0.0.0.0 --port 10000
+    startCommand: php artisan serve --host 0.0.0.0 --port $PORT
     envVars:
       - key: APP_ENV
         value: production
+      - key: APP_DEBUG
+        value: false
       - key: APP_KEY
         generateValue: true
       - key: DB_CONNECTION
@@ -26,6 +27,6 @@ services:
       - key: DB_USERNAME
         value: neondb_owner
       - key: DB_PASSWORD
-        value: npg_ae64JGYZIfQO
+        value: npg_ae64JGYZIfQO # sua senha real aqui
       - key: DB_SSLMODE
         value: require
