@@ -32,7 +32,7 @@ class AlunoRelacionamentoSeeder extends Seeder
 
             // Relaciona 1 endereço
             $enderecoId = collect($enderecoIds)->random();
-            DB::table('aluno_endereco')->insert([
+            DB::table('aluno_endereco')->insertOrIgnore([
                 'aluno_id' => $alunoId,
                 'endereco_id' => $enderecoId,
                 'created_at' => now(),

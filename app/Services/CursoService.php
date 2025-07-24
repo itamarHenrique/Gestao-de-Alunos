@@ -17,7 +17,7 @@ class CursoService
 
     public function getAll()
     {
-        return collect($this->curso->all());
+        return $this->curso->paginate(10);
 
     }
     public function getAllWithAlunos()
@@ -32,10 +32,16 @@ class CursoService
 
     public function createCurso($data)
 {
+    $curso = Curso::where('nome', $data['nome'])->first();
+
+    if ($curso) {
+        return $curso; 
+    }
+
     return Curso::create($data);
 }
 
-public function updateCurso($data, $id)
+public function updateCurso($id, $data)
 {
     $curso = Curso::find($id);
 

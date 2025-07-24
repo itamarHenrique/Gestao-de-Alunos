@@ -30,6 +30,7 @@ class AlunoUpdateRequest extends FormRequest
         'unidade_de_ensino' => ['sometimes', 'string', 'min:4'],
         'enderecos' => ['sometimes', 'array'],
         'curso' => ['sometimes', 'array'],
+        'password' => ['nullable', 'string', 'min:8', 'confirmed'],
     ];
 }
 

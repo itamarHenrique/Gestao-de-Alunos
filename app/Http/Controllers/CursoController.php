@@ -16,9 +16,11 @@ class CursoController extends Controller
         $this ->cursoService = $cursoService;
     }
 
-    public function getAll()
+    public function index()
     {
-        return $this->cursoService->getAll();
+        $cursos = $this->cursoService->getAll();
+
+        return view('admin.cursos.index', compact('cursos'));
     }
 
     public function getById($id)
@@ -27,7 +29,13 @@ class CursoController extends Controller
 
     }
 
-    public function createCurso(CursoPostRequest $cursoPostRequest)
+    public function create()
+    {
+        return view('admin.cursos.create');
+    }
+
+
+    public function store(CursoPostRequest $cursoPostRequest)
     {
         $data = $cursoPostRequest->validated();
 
@@ -37,23 +45,43 @@ class CursoController extends Controller
             return response()->json(['message' => 'Erro ao criar o curso'], 400);
         }
 
-        return $curso;
+        return redirect()->route('admin.cursos.index')->with('success', 'Curso criado com sucesso.');
     }
 
-    public function updateCurso(CursoUpdateRequest $cursoUpdateRequest, $id)
+    public function update(CursoUpdateRequest $cursoUpdateRequest, $id)
     {
         $data = $cursoUpdateRequest->validated();
 
-        try{
-            $curso = $this->cursoService->updateCurso($id, $data);
+        $curso = $this->cursoService->updateCurso($id, $data);
 
-            if(!$curso){
-                return response()->json(['message' => 'Erro ao atualizar o curso'], 400);
-            }
-
-            return response()->json($curso, 200);
-        }catch(\Exception $e){
-            return response()->json(['message' => $e->getMessage()], 400);
+        if (!$curso) {
+            return redirect()->back()->with('error', 'Erro ao atualizar o curso.');
         }
+
+        return redirect()->route('admin.cursos.index')->with('success', 'Curso atualizado com sucesso.');
     }
+
+    public function edit($id)
+    {
+        $curso = $this->cursoService->getById($id);
+
+        if (!$curso) {
+            return redirect()->route('admin.cursos.index')->with('error', 'Curso não encontrado.');
+        }
+
+        return view('admin.cursos.edit', compact('curso'));
+    }
+
+    public function destroy($id)
+    {
+        $deletado = $this->cursoService->deleteCurso($id);
+
+        if (!$deletado) {
+            return redirect()->back()->with('error', 'Erro ao excluir o curso.');
+        }
+
+        return redirect()->route('admin.cursos.index')->with('success', 'Curso excluído com sucesso.');
+    }
+
+
 }

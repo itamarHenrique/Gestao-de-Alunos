@@ -39,7 +39,7 @@ class AlunosController extends Controller
     {
         $alunos = $this->alunoService->getAll();
 
-        return AlunoResource::collection($alunos);
+        return view('admin.alunos.index', compact('alunos'));
     }
 
     public function getById($id)
@@ -49,14 +49,28 @@ class AlunosController extends Controller
         return new AlunoResource($aluno);
     }
 
-    public function deleteAluno($id)
+        public function deleteAluno($id)
     {
-        return $this->alunoService->deleteAluno($id);
+        $deleted = $this->alunoService->deleteAluno($id);
+
+        if ($deleted) {
+            return redirect()->route('admin.alunos.index')->with('success', 'Aluno excluído com sucesso.');
+        }
+
+        return redirect()->route('admin.alunos.index')->withErrors('Erro ao excluir aluno.');
     }
+
 
     public function createAluno(AlunoPostRequest $request)
     {
         $data = $request->validated();
+        
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
 
         $dataEndereco = $data['enderecos'];
 
@@ -80,44 +94,61 @@ class AlunosController extends Controller
 
         $aluno->load('cursos');
 
-        return new AlunoResource($aluno);
+        return $this->index();
 
     }
+    
+        public function create()
+    {
+        // Buscar dados necessários para popular selects no formulário, se precisar
+        $cursos = $this->cursoService->getAll();
+        $enderecos = $this->enderecoService->getAll();
 
-    public function updateAluno(AlunoUpdateRequest $request, $id)
-{
-    $data = $request->validated();
-    $dataEndereco = $data['enderecos'] ?? null;
-    $dataCurso = $data['curso'] ?? null;
-
-    try{
-
-        unset($data['enderecos']);
-        unset($data['curso']);
-
-        $aluno = $this->alunoService->updateAluno($data, $id);
-
-        if (!$aluno) {
-            return response()->json(['message' => 'Erro ao atualizar os dados do aluno!'], 400);
-        }
-
-        if($dataEndereco){
-            $endereco = $this->enderecoService->updateEndereco($dataEndereco, $aluno->enderecos->first()->id);
-        }
-
-        if($dataCurso){
-            $curso = $this->cursoService->updateCurso($dataCurso, $aluno->cursos->first()->id);
-        }
-
-
-        $aluno->load('enderecos', 'cursos');
-
-        return response()->json(new AlunoResource($aluno), 200);
-
-    }catch(\Exception $e){
-        return response()->json(['message' => $e->getMessage()], 400);
+        // Retorna a view admin.alunos.create passando os dados
+        return view('admin.alunos.create', compact('cursos', 'enderecos'));
     }
-}
+        public function edit($id)
+    {
+        $aluno = Aluno::with('cursos')->findOrFail($id);
+        $cursos = Curso::all();
+
+        return view('admin.alunos.edit', compact('aluno', 'cursos'));
+    }
+
+
+
+
+    public function updateAluno(AlunoUpdateRequest $request, Aluno $aluno)
+    {
+        $data = $request->validated();
+        $dataEndereco = $data['enderecos'] ?? null;
+        $dataCurso = $data['curso'] ?? null;
+
+        try {
+            unset($data['enderecos'], $data['curso']);
+
+            $aluno = $this->alunoService->updateAluno($data, $aluno->id);
+
+            if (!$aluno) {
+                return redirect()->back()->withErrors(['message' => 'Erro ao atualizar o aluno']);
+            }
+
+            if ($dataEndereco) {
+                $this->enderecoService->updateEndereco($dataEndereco, $aluno->enderecos->first()->id);
+            }
+
+            if ($dataCurso) {
+                $this->cursoService->updateCurso($dataCurso, $aluno->cursos->first()->id);
+            }
+
+            return redirect()->route('admin.alunos.index')->with('success', 'Aluno atualizado com sucesso.');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
+    }
+
+
 
 
 }

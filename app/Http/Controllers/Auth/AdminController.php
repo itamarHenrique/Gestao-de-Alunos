@@ -11,11 +11,11 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $alunos = Aluno::latest()->take(10)->get();
+        $alunos = Aluno::with('cursos', 'enderecos')->latest()->paginate(10);
 
-        $alunos->load('cursos', 'enderecos');
+        // $alunos->load('cursos', 'enderecos');
 
-        $totalAlunos = $alunos->count();
+        $totalAlunos = Aluno::count();
         $totalCursos = Curso::count();
 
         return view('admin.dashboard', compact('alunos', 'totalAlunos', 'totalCursos'));

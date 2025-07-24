@@ -17,7 +17,7 @@ class AlunoService
 
     public function getAll()
     {
-        return Aluno::with(['enderecos', 'cursos'])->get();
+        return Aluno::with(['enderecos', 'cursos'])->paginate(10);
     }
 
     public function getById($id)
@@ -34,12 +34,13 @@ class AlunoService
             'primeiro_nome' => $data['primeiro_nome'],
             'sobrenome' => $data['sobrenome'],
             'endereco' => $endereco,
-            'RA' => $data['RA'],
+            'matricula' => $data['matricula'],
             'user_status' => $data['user_status'],
             'email' => $data['email'],
             'celular' => $data['celular'],
             'curso' => $data['curso'],
-            'unidade_de_ensino' => $data['unidade_de_ensino']
+            'unidade_de_ensino' => $data['unidade_de_ensino'],
+            'password' => bcrypt($data['password'])
         ]);
     }
 

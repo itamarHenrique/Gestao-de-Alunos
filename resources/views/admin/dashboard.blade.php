@@ -42,29 +42,16 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="{{ route('admin.alunos.index') }}" class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50">
                             <span class="material-icons mr-3">people</span>
-                            Alunos
+                            Verificar Alunos
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50">
-                            <span class="material-icons mr-3">person</span>
-                            Professores
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="{{ route('admin.cursos.index') }}" class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50">
                             <span class="material-icons mr-3">book</span>
                             Cursos
                         </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50">
-                            <span class="material-icons mr-3">settings</span>
-                            Configurações
-                        </a>
-                    </li>
                 </ul>
             </div>
         </aside>
@@ -88,7 +75,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-lg shadow">
+                {{-- <div class="bg-white p-6 rounded-lg shadow">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-500">Total de Professores</p>
@@ -96,7 +83,7 @@
                         </div>
                         <span class="material-icons text-green-500 text-3xl">person</span>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="bg-white p-6 rounded-lg shadow">
                     <div class="flex items-center justify-between">
@@ -142,6 +129,9 @@
                         </tbody>
 
                     </table>
+                    <div class="mt-4">
+                        {{ $alunos->links() }}
+                    </div>
                 </div>
             </div>
         </main>
