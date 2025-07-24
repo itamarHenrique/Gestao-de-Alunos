@@ -4,11 +4,18 @@ services:
     env: docker
     plan: free
     dockerfilePath: Dockerfile
+    buildCommand: composer install --no-dev --optimize-autoloader
+    startCommand: php artisan serve --host=0.0.0.0 --port=8000
+    postDeployCommand: php artisan migrate --force
     envVars:
       - key: APP_ENV
         value: production
+      - key: APP_DEBUG
+        value: true
       - key: APP_KEY
         generateValue: true
+      - key: APP_URL
+        value: https://gestao-de-alunos.onrender.com
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST

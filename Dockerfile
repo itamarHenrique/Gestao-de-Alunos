@@ -1,31 +1,37 @@
-FROM php:8.2-apache
+# Usa imagem oficial do PHP com FPM
+FROM php:8.2-fpm
 
-# Instalar dependências do sistema
+# Instala extensões e dependências do sistema
 RUN apt-get update && apt-get install -y \
-    libzip-dev unzip libpq-dev git curl \
-    && docker-php-ext-install zip pdo pdo_pgsql
+    build-essential \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    zip unzip curl git vim \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
-# Instalar o Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+# Instala o Composer (do container oficial do Composer)
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copiar código para dentro do container
-COPY . /var/www/html
-
-# Rodar o composer install no container
+# Define diretório de trabalho
 WORKDIR /var/www/html
+
+# Copia todos os arquivos da aplicação
+COPY . .
+
+# Instala dependências PHP do Laravel
 RUN composer install --no-dev --optimize-autoloader
 
-# Corrigir permissões
+# Permissões corretas para diretórios usados pelo Laravel
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+    && chmod -R 775 storage bootstrap/cache
 
-# Ativar mod_rewrite do Apache
-RUN a2enmod rewrite
+# Gera caches do Laravel (rotas e config)
+RUN php artisan config:cache && php artisan route:cache
 
-# Configurar DocumentRoot para a pasta public/
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
+# Expõe a porta usada pelo artisan serve
+EXPOSE 8000
 
-# Permitir uso do .htaccess
-RUN echo '<Directory /var/www/html/public>\n\
-    AllowOverride All\n\
-</Directory>' >> /etc/apache2/apache2.conf
+# Comando para iniciar a aplicação
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
