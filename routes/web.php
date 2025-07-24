@@ -9,7 +9,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Rota pública inicial
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
 
 // Rotas de autenticação
