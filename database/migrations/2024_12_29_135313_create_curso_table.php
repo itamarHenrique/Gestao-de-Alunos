@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $userFormacao = config('constants.formacao');
+        $userFormacao = config('constants.tipo_formacao');
 
         Schema::create('cursos', function (Blueprint $table) use ($userFormacao) {
             $table->id();

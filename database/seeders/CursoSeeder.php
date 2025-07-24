@@ -54,7 +54,7 @@ class CursoSeeder extends Seeder
         foreach ($novosCursos as $curso) {
         
                 DB::table('cursos')->insert([
-                ['nome' => $curso, 'created_at' => now(), 'updated_at' => now()]
+                ['nome' => $curso, 'created_at' => now(), 'updated_at' => now(), 'formacao' => 'Graduação']
             ]);
         }
     }
