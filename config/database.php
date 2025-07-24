@@ -93,10 +93,9 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'sslmode' => env('DB_SSLMODE', 'prefer'),
-            'options' => extension_loaded('pdo_pgsql') ? [
-                PDO::PGSQL_ATTR_SSL_MODE => env('DB_SSLMODE', 'prefer'),
-            ] : [],
+            'options' => [],
         ],
+
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
