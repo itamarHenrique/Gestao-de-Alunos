@@ -1,33 +1,27 @@
 FROM php:8.2-apache
 
-# Instalar dependências
+# Instalar dependências necessárias
 RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    unzip \
-    git \
-    curl \
-    zip \
-    && docker-php-ext-install pdo pdo_pgsql
+    libzip-dev unzip \
+    && docker-php-ext-install zip pdo pdo_pgsql
 
-# Ativar o mod_rewrite do Apache
+# Ativa o módulo de reescrita
 RUN a2enmod rewrite
 
-# Definir diretório de trabalho
+# Copia os arquivos do Laravel
+COPY . /var/www/html
+
+# Define permissões
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+# Define o diretório de trabalho
 WORKDIR /var/www/html
 
-# Copiar arquivos do projeto
-COPY . .
+# Configura o Apache para apontar para public/
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
 
-# Instalar o Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Instalar dependências do Laravel
-RUN composer install --no-dev --optimize-autoloader \
-    && php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan migrate --force
-
-# Permissões
-RUN chown -R www-data:www-data /var/www/html
-
-EXPOSE 80
+# Adiciona configurações extras de rewrite para Laravel
+RUN echo '<Directory /var/www/html/public>\n\
+    AllowOverride All\n\
+</Directory>' >> /etc/apache2/apache2.conf
