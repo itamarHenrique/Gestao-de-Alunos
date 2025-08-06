@@ -26,6 +26,23 @@
             @enderror
         </div>
 
+        <div class="mb-4">
+            <label for="formacao" class="block text-gray-700 mb-2">Tipo de Formação</label>
+            <select name="formacao" id="formacao"
+                class="w-full border border-gray-300 rounded px-3 py-2 @error('formacao') border-red-500 @enderror">
+                <option value="">Selecione...</option>
+                @foreach(config('constants.tipo_formacao', []) as $opcao)
+                    <option value="{{ $opcao }}" {{ old('formacao') == $opcao ? 'selected' : '' }}>
+                        {{ $opcao }}
+                    </option>
+                @endforeach
+            </select>
+            @error('formacao')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+
         <div class="flex justify-between items-center mt-6">
             <a href="{{ route('admin.cursos.index') }}" 
                class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Voltar</a>

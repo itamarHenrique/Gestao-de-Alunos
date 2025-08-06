@@ -17,7 +17,7 @@ class CursoService
 
     public function getAll()
     {
-        return $this->curso->paginate(10);
+        return $this->curso->orderBy('nome')->paginate(10);
 
     }
     public function getAllWithAlunos()
@@ -35,7 +35,7 @@ class CursoService
     $curso = Curso::where('nome', $data['nome'])->first();
 
     if ($curso) {
-        return $curso; 
+        return $curso;
     }
 
     return Curso::create($data);
