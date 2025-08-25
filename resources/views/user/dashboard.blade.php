@@ -82,7 +82,6 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h3 class="text-lg font-semibold text-gray-800">Mensagens</h3>
-                        <p class="text-gray-600">3 não lidas</p>
                     </div>
                     <span class="material-icons text-yellow-500 text-3xl">email</span>
                 </div>
@@ -93,13 +92,9 @@
         <div class="bg-white rounded-lg shadow-md p-6 mb-8">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Avisos Recentes</h2>
             <div class="space-y-4">
-                <div class="border-l-4 border-green-500 pl-4 py-2">
-                    <h3 class="font-medium">Reunião de Pais</h3>
-                    <p class="text-sm text-gray-600">Dia 15/10 às 19h no auditório</p>
-                </div>
                 <div class="border-l-4 border-blue-500 pl-4 py-2">
-                    <h3 class="font-medium">Prova de Matemática</h3>
-                    <p class="text-sm text-gray-600">Será aplicada na próxima segunda-feira</p>
+                    <h3 class="font-medium">Inicios das provas</h3>
+                    <p class="text-sm text-gray-600">Terão inicio na proxima semana</p>
                 </div>
             </div>
         </div>
