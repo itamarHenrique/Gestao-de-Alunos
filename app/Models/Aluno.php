@@ -24,7 +24,7 @@ class Aluno extends Authenticatable
 
     public function enderecos()
     {
-        return $this->belongsTo(Endereco::class, 'aluno_endereco', 'aluno_id', 'endereco_id')->withTimestamps();
+        return $this->belongsToMany(Endereco::class, 'aluno_endereco', 'aluno_id', 'endereco_id')->withTimestamps();
     }
 
     public function cursos()
