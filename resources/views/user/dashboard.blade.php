@@ -29,6 +29,11 @@
                     <span class="material-icons text-sm">person</span>
                     <span>Perfil</span>
                 </a>
+                <a href="{{ route('biblioteca.index') }}"
+                   class="flex items-center space-x-1 hover:bg-green-600 px-3 py-1 rounded">
+                    <span class="material-icons text-sm">menu_book</span>
+                    <span>Biblioteca</span>
+                </a>
                 <a href="{{ route('logout') }}" 
                    class="flex items-center space-x-1 hover:bg-green-600 px-3 py-1 rounded"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

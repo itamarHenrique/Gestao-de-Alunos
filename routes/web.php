@@ -4,6 +4,7 @@ use App\Http\Controllers\AlunosController;
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CursoController;
+use App\Http\Controllers\LivroController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -52,6 +53,26 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::delete('/{id}', [CursoController::class, 'destroy'])->name('destroy');
     });
     
+    Route::prefix('/livros')->name('admin.livros.')->group(function () {
+    Route::get('/', [LivroController::class, 'index'])->name('index');
+    Route::get('/create', [LivroController::class, 'create'])->name('create');
+    Route::post('/', [LivroController::class, 'store'])->name('store');
+    Route::get('/emprestimos', [LivroController::class, 'emprestimos'])->name('emprestimos');
+    Route::post('/emprestimos', [LivroController::class, 'emprestar'])->name('emprestimos.store');
+    Route::post('/emprestimos/{emprestimoId}/devolver', [LivroController::class, 'devolver'])->name('emprestimos.devolver');
+    Route::get('/{id}/edit', [LivroController::class, 'edit'])->name('edit');
+    Route::get('/{id}/emprestar', [LivroController::class, 'showEmprestar'])->name('emprestar');
+    Route::put('/{id}', [LivroController::class, 'update'])->name('update');
+    Route::delete('/{id}', [LivroController::class, 'destroy'])->name('destroy');
+    });
+    
+});
+
+Route::middleware(['auth_biblioteca'])->prefix('biblioteca')->name('biblioteca.')->group(function () {
+    Route::get('/', [LivroController::class, 'catalogo'])->name('index');
+    Route::get('/meus-emprestimos', [LivroController::class, 'meusEmprestimos'])->name('emprestimos');
+    Route::get('/{id}/baixar', [LivroController::class, 'baixar'])->name('download');
+    Route::get('/{id}', [LivroController::class, 'show'])->name('show');
 });
 
 

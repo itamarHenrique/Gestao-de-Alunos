@@ -52,6 +52,11 @@
                             <span class="material-icons mr-3">book</span>
                             Cursos
                         </a>
+                    <li>
+                        <a href="{{ route('admin.livros.index') }}" class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50">
+                            <span class="material-icons mr-3">menu_book</span>
+                            Biblioteca
+                        </a>
                 </ul>
             </div>
         </aside>

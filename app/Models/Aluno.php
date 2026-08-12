@@ -32,6 +32,13 @@ class Aluno extends Authenticatable
         return $this->belongsToMany(Curso::class, 'aluno_curso', 'aluno_id', 'curso_id')->withTimestamps();
     }
 
+    public function livros()
+    {
+        return $this->belongsToMany(Livro::class, 'aluno_livro', 'aluno_id', 'livro_id')
+            ->withPivot('id', 'data_emprestimo', 'data_devolucao')
+            ->withTimestamps();
+    }
+
 
 public function getNomeCompletoAttribute()
 {
