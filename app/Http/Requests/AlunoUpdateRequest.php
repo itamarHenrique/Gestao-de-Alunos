@@ -24,7 +24,7 @@ class AlunoUpdateRequest extends FormRequest
     return [
         'primeiro_nome' => ['sometimes', 'string', 'max:255', 'min:3'],
         'sobrenome' => ['sometimes', 'string', 'max:255', 'min:3'],
-        'RA' => ['sometimes', 'string', 'max:255', 'min:7'],
+        'matricula' => ['sometimes', 'string', 'max:255', 'min:7'],
         'email' => ['sometimes', 'email', 'max:255', 'min:8'],
         'celular' => ['sometimes', 'string', 'max:20', 'min:11'],
         'unidade_de_ensino' => ['sometimes', 'string', 'min:4'],

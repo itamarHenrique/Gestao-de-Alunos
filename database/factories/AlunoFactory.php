@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Aluno;
-use App\Models\Endereco;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Aluno>
@@ -26,7 +26,7 @@ class AlunoFactory extends Factory
             'primeiro_nome' => $this->faker->firstName(),
             'sobrenome' => $this->faker->lastName(),
             'email' => $this->faker->unique->safeEmail(),
-            'RA' => $this->faker->unique()->randomNumber(8),
+            'matricula' => $this->faker->unique()->randomNumber(8),
             'unidade_de_ensino' => $this->faker->randomElement([
                 'Universidade Nova Era',
                 'Faculdade Estrela do Saber',
@@ -50,7 +50,8 @@ class AlunoFactory extends Factory
                 'Instituto Brasileiro de Ensino Superior (IBES)',
                 'Faculdade Integração Global',
             ]),
-            'celular' => $this->faker->phoneNumber()
+            'celular' => $this->faker->phoneNumber(),
+            'password' => Hash::make('password'),
         ];
     }
 

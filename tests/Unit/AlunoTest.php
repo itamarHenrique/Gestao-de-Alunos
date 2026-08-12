@@ -9,6 +9,8 @@ use Tests\TestCase; // <- Use a TestCase do Laravel
 
 class AlunoTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * A basic unit test example.
      */
