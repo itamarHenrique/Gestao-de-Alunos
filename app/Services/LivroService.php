@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Aluno;
 use App\Models\Livro;
+use App\Models\Reserva;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -144,6 +145,100 @@ class LivroService
     {
         return Aluno::find($alunoId)?->livros()
             ->orderBy('aluno_livro.data_emprestimo', 'desc')
+            ->get();
+    }
+
+    public function reservar($alunoId, $livroId, $dataRetirada)
+    {
+        $livro = Livro::find($livroId);
+
+        if (!$livro) {
+            return false;
+        }
+
+        if ($livro->disponiveis <= 0) {
+            return false;
+        }
+
+        $jaReservado = Reserva::where('aluno_id', $alunoId)
+            ->where('livro_id', $livroId)
+            ->where('status', Reserva::STATUS_PENDENTE)
+            ->exists();
+
+        if ($jaReservado) {
+            return false;
+        }
+
+        return Reserva::create([
+            'aluno_id' => $alunoId,
+            'livro_id' => $livroId,
+            'data_retirada' => $dataRetirada,
+            'status' => Reserva::STATUS_PENDENTE,
+        ]);
+    }
+
+    public function reservasPendentes()
+    {
+        return DB::table('reservas')
+            ->join('alunos', 'alunos.id', '=', 'reservas.aluno_id')
+            ->join('livros', 'livros.id', '=', 'reservas.livro_id')
+            ->where('reservas.status', Reserva::STATUS_PENDENTE)
+            ->select(
+                'reservas.id',
+                'reservas.data_retirada',
+                'reservas.status',
+                'alunos.id as aluno_id',
+                DB::raw("CONCAT(alunos.primeiro_nome, ' ', alunos.sobrenome) as aluno_nome"),
+                'livros.id as livro_id',
+                'livros.titulo as livro_titulo'
+            )
+            ->orderBy('reservas.data_retirada', 'asc')
+            ->paginate(10);
+    }
+
+    public function confirmarReserva($reservaId)
+    {
+        $reserva = Reserva::find($reservaId);
+
+        if (!$reserva || $reserva->status !== Reserva::STATUS_PENDENTE) {
+            return false;
+        }
+
+        $livro = Livro::find($reserva->livro_id);
+
+        if (!$livro) {
+            return false;
+        }
+
+        DB::transaction(function () use ($reserva, $livro) {
+            $livro->alunos()->attach($reserva->aluno_id, ['data_emprestimo' => now()]);
+
+            $reserva->update(['status' => Reserva::STATUS_CONFIRMADA]);
+        });
+
+        return true;
+    }
+
+    public function cancelarReserva($reservaId, $alunoId = null)
+    {
+        $reserva = Reserva::find($reservaId);
+
+        if (!$reserva || $reserva->status !== Reserva::STATUS_PENDENTE) {
+            return false;
+        }
+
+        if ($alunoId !== null && $reserva->aluno_id !== $alunoId) {
+            return false;
+        }
+
+        return $reserva->update(['status' => Reserva::STATUS_CANCELADA]);
+    }
+
+    public function reservasDoAluno($alunoId)
+    {
+        return Reserva::with('livro')
+            ->where('aluno_id', $alunoId)
+            ->orderBy('data_retirada', 'desc')
             ->get();
     }
 }

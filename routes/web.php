@@ -60,6 +60,9 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/emprestimos', [LivroController::class, 'emprestimos'])->name('emprestimos');
     Route::post('/emprestimos', [LivroController::class, 'emprestar'])->name('emprestimos.store');
     Route::post('/emprestimos/{emprestimoId}/devolver', [LivroController::class, 'devolver'])->name('emprestimos.devolver');
+    Route::get('/reservas', [LivroController::class, 'reservas'])->name('reservas');
+    Route::post('/reservas/{reservaId}/confirmar', [LivroController::class, 'confirmarReserva'])->name('reservas.confirmar');
+    Route::post('/reservas/{reservaId}/cancelar', [LivroController::class, 'cancelarReservaAdmin'])->name('reservas.cancelar');
     Route::get('/{id}/edit', [LivroController::class, 'edit'])->name('edit');
     Route::get('/{id}/emprestar', [LivroController::class, 'showEmprestar'])->name('emprestar');
     Route::put('/{id}', [LivroController::class, 'update'])->name('update');
@@ -71,6 +74,8 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
 Route::middleware(['auth_biblioteca'])->prefix('biblioteca')->name('biblioteca.')->group(function () {
     Route::get('/', [LivroController::class, 'catalogo'])->name('index');
     Route::get('/meus-emprestimos', [LivroController::class, 'meusEmprestimos'])->name('emprestimos');
+    Route::post('/{id}/reservar', [LivroController::class, 'reservar'])->name('reservar');
+    Route::post('/reservas/{reservaId}/cancelar', [LivroController::class, 'cancelarReservaAluno'])->name('reservas.cancelar');
     Route::get('/{id}/baixar', [LivroController::class, 'baixar'])->name('download');
     Route::get('/{id}', [LivroController::class, 'show'])->name('show');
 });

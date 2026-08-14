@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EmprestimoRequest;
 use App\Http\Requests\LivroPostRequest;
 use App\Http\Requests\LivroUpdateRequest;
+use App\Http\Requests\ReservaRequest;
 use App\Models\Aluno;
 use App\Models\Livro;
 use App\Services\LivroService;
@@ -133,6 +134,35 @@ class LivroController extends Controller
         return redirect()->route('admin.livros.emprestimos')->with('success', 'Livro devolvido com sucesso.');
     }
 
+    public function reservas()
+    {
+        $reservas = $this->livroService->reservasPendentes();
+
+        return view('admin.livros.reservas', compact('reservas'));
+    }
+
+    public function confirmarReserva($reservaId)
+    {
+        $confirmada = $this->livroService->confirmarReserva($reservaId);
+
+        if (!$confirmada) {
+            return redirect()->route('admin.livros.reservas')->with('error', 'Não foi possível confirmar a reserva.');
+        }
+
+        return redirect()->route('admin.livros.reservas')->with('success', 'Reserva confirmada. Empréstimo registrado com sucesso.');
+    }
+
+    public function cancelarReservaAdmin($reservaId)
+    {
+        $cancelada = $this->livroService->cancelarReserva($reservaId);
+
+        if (!$cancelada) {
+            return redirect()->route('admin.livros.reservas')->with('error', 'Não foi possível cancelar a reserva.');
+        }
+
+        return redirect()->route('admin.livros.reservas')->with('success', 'Reserva cancelada com sucesso.');
+    }
+
     // ===================== PÁGINA PÚBLICA =====================
 
     public function catalogo(Request $request)
@@ -154,7 +184,47 @@ class LivroController extends Controller
             abort(404);
         }
 
-        return view('biblioteca.show', compact('livro'));
+        $minhaReserva = $this->usuarioAtual() instanceof Aluno
+            ? $livro->reservasPendentes()->where('aluno_id', $this->usuarioAtual()->id)->first()
+            : null;
+
+        return view('biblioteca.show', compact('livro', 'minhaReserva'));
+    }
+
+    public function reservar(ReservaRequest $request)
+    {
+        $usuario = $this->usuarioAtual();
+
+        if (!$usuario instanceof Aluno) {
+            return redirect()->route('biblioteca.index')->with('error', 'Apenas alunos podem reservar livros.');
+        }
+
+        $data = $request->validated();
+
+        $reserva = $this->livroService->reservar($usuario->id, $data['livro_id'], $data['data_retirada']);
+
+        if (!$reserva) {
+            return redirect()->route('biblioteca.show', $data['livro_id'])->with('error', 'Não foi possível reservar o livro. Verifique a disponibilidade ou se você já possui uma reserva pendente para este livro.');
+        }
+
+        return redirect()->route('biblioteca.emprestimos')->with('success', 'Reserva firmada com sucesso! Compareça na data escolhida para retirar o livro.');
+    }
+
+    public function cancelarReservaAluno($reservaId)
+    {
+        $usuario = $this->usuarioAtual();
+
+        if (!$usuario instanceof Aluno) {
+            return redirect()->route('biblioteca.index')->with('error', 'Apenas alunos podem cancelar reservas.');
+        }
+
+        $cancelada = $this->livroService->cancelarReserva($reservaId, $usuario->id);
+
+        if (!$cancelada) {
+            return redirect()->route('biblioteca.emprestimos')->with('error', 'Não foi possível cancelar a reserva.');
+        }
+
+        return redirect()->route('biblioteca.emprestimos')->with('success', 'Reserva cancelada com sucesso.');
     }
 
     public function baixar($id)
@@ -174,16 +244,23 @@ class LivroController extends Controller
 
     public function meusEmprestimos()
     {
-        $usuario = Auth::guard('aluno')->check()
-            ? Auth::guard('aluno')->user()
-            : Auth::user();
+        $usuario = $this->usuarioAtual();
 
         if ($usuario instanceof Aluno) {
             $emprestimos = $this->livroService->emprestimosDoAluno($usuario->id);
+            $reservas = $this->livroService->reservasDoAluno($usuario->id);
         } else {
             $emprestimos = collect();
+            $reservas = collect();
         }
 
-        return view('biblioteca.emprestimos', compact('emprestimos'));
+        return view('biblioteca.emprestimos', compact('emprestimos', 'reservas'));
+    }
+
+    private function usuarioAtual()
+    {
+        return Auth::guard('aluno')->check()
+            ? Auth::guard('aluno')->user()
+            : Auth::user();
     }
 }

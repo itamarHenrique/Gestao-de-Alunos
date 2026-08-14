@@ -39,6 +39,11 @@ class Aluno extends Authenticatable
             ->withTimestamps();
     }
 
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class);
+    }
+
 
 public function getNomeCompletoAttribute()
 {

@@ -27,13 +27,28 @@ class Livro extends Model
         return $this->alunos()->wherePivotNull('data_devolucao');
     }
 
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class);
+    }
+
+    public function reservasPendentes()
+    {
+        return $this->reservas()->where('status', Reserva::STATUS_PENDENTE);
+    }
+
     public function getEmprestimosAtivosAttribute()
     {
         return $this->emprestimosAtivos()->count();
     }
 
+    public function getReservasPendentesAttribute()
+    {
+        return $this->reservasPendentes()->count();
+    }
+
     public function getDisponiveisAttribute()
     {
-        return max(0, $this->quantidade - $this->emprestimos_ativos);
+        return max(0, $this->quantidade - $this->emprestimos_ativos - $this->reservas_pendentes);
     }
 }

@@ -54,6 +54,57 @@
                         </a>
                     @endif
                 </div>
+
+                <div class="mt-8 border-t pt-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-3">Reservar retirada</h2>
+
+                    @if($minhaReserva)
+                        <div class="bg-yellow-50 border border-yellow-200 rounded p-4">
+                            <p class="text-yellow-800">
+                                Você já reservou este livro para retirada em
+                                <strong>{{ $minhaReserva->data_retirada->format('d/m/Y') }}</strong>.
+                                Compareça na data escolhida para retirar o exemplar.
+                            </p>
+                            <form action="{{ route('biblioteca.reservas.cancelar', $minhaReserva->id) }}" method="POST" class="mt-3">
+                                @csrf
+                                <button type="submit"
+                                        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                                        onclick="return confirm('Cancelar esta reserva?');">
+                                    Cancelar reserva
+                                </button>
+                            </form>
+                        </div>
+                    @elseif($livro->disponiveis > 0)
+                        <form action="{{ route('biblioteca.reservar', $livro->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="livro_id" value="{{ $livro->id }}">
+
+                            <div class="mb-3">
+                                <label for="data_retirada" class="block text-sm text-gray-600 mb-1">
+                                    Escolha o dia que irá à faculdade retirar o livro:
+                                </label>
+                                <input type="date" name="data_retirada" id="data_retirada"
+                                       min="{{ now()->format('Y-m-d') }}"
+                                       required
+                                       class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            </div>
+
+                            <button type="submit"
+                                    class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+                                Firmar acordo de retirada
+                            </button>
+
+                            <p class="text-xs text-gray-500 mt-2">
+                                Ao firmar o acordo, o exemplar ficará reservado para você até a data de retirada.
+                            </p>
+                        </form>
+                        @error('data_retirada')
+                            <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                        @enderror
+                    @else
+                        <p class="text-red-600">No momento não há exemplares disponíveis para reserva.</p>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

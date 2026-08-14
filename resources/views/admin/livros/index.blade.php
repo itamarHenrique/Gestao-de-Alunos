@@ -107,6 +107,10 @@
                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                Empréstimos Ativos
             </a>
+            <a href="{{ route('admin.livros.reservas') }}" 
+               class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700">
+               Reservas Pendentes
+            </a>
         </div>
 
         <!-- Paginação -->
