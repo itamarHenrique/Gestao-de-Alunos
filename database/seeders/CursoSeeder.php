@@ -7,15 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class CursoSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-
-          $cursosExatas = [
+        $cursosExatas = [
             'Engenharia de Produção',
             'Engenharia Mecânica',
             'Engenharia Química',
@@ -28,7 +22,7 @@ class CursoSeeder extends Seeder
             'Tecnologia em Automação Industrial'
         ];
 
-         $cursosHumanas = [
+        $cursosHumanas = [
             'Antropologia',
             'Serviço Social',
             'Teologia',
@@ -52,9 +46,11 @@ class CursoSeeder extends Seeder
         $novosCursos = array_merge($cursosExatas, $cursosHumanas, $cursosTi);
 
         foreach ($novosCursos as $curso) {
-        
-                DB::table('cursos')->insert([
-                ['nome' => $curso, 'created_at' => now(), 'updated_at' => now(), 'formacao' => 'Graduação']
+            DB::table('cursos')->insertOrIgnore([
+                'nome' => $curso,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'formacao' => 'Graduação'
             ]);
         }
     }

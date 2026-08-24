@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gestao-alunos-app
+    ports:
+      - "8000:80"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=pgsql
+      - DB_HOST=sonaqube-db-1
+      - DB_PORT=5432
+      - DB_DATABASE=gestao_alunos
+      - DB_USERNAME=laravel
+      - DB_PASSWORD=secret
+    volumes:
+      - .:/var/www/html
+    command: >
+      sh -c "
+        composer install --no-interaction --optimize-autoloader &&
+        php artisan key:generate --force &&
+        php artisan migrate --force &&
+        php artisan db:seed --force &&
+        apache2-foreground
+      "
+
+networks:
+  default:
+    external: true
+    name: sonaqube_sonar_net
